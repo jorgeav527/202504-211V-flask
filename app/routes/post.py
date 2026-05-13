@@ -11,10 +11,17 @@ def get_all_posts():
     return render_template("post/list.html", post_list=posts)
 
 @post_bp.route("/api/list", methods=["GET"])
-def get_all_posts_json():
+def get_posts_partial():
     db = get_db_connection()
     posts = db.execute("SELECT * FROM posts;")
     return render_template("partials/datos-json.html", post_list=posts)
+
+
+@post_bp.route("/api/posts", methods=["GET"])
+def get_all_posts_json():
+    db = get_db_connection()
+    posts = db.execute("SELECT * FROM posts;").fetchall()
+    return jsonify([dict(post) for post in posts])
 
 
 @post_bp.route("/<int:post_id>")
