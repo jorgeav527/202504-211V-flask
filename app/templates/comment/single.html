@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Comentario #{{ comment["id"] }}</h5>
+            <small class="text-muted">Creado el: {{ comment["created_at"] }}</small>
+            <hr>
+            <p class="card-text">{{ comment["content"] }}</p>
+            <h6>Posts asociados:</h6>
+            <ul>
+                {% for post in posts %}
+                <li><a href="{{ url_for('post.get_single_post', post_id=post['id']) }}">{{ post["title"] }}</a></li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('comments.get_all_comments') }}" class="btn btn-secondary">← Volver</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

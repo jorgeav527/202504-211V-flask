@@ -11,5 +11,25 @@
             <a href="/post/list" class="btn btn-secondary">← Volver</a>
         </div>
     </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Comentarios</h5>
+            {% if comments %}
+            <ul class="list-group">
+                {% for comment in comments %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('comments.get_single_comment', comment_id=comment['id']) }}">
+                        {{ comment["content"] }}
+                    </a>
+                    <small class="text-muted float-end">{{ comment["created_at"] }}</small>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted">Sin comentarios</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}

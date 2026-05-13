@@ -28,10 +28,15 @@ def get_all_posts_json():
 def get_single_post(post_id):
     db = get_db_connection()
     post = db.execute("SELECT * FROM posts WHERE id = ?", (post_id,)).fetchone()
-    print(post)
     if post is None:
         abort(404)
-    return render_template("post/single.html", post_single=post)
+    comments = db.execute(
+        """SELECT c.id, c.content, c.created_at FROM comments c
+           JOIN post_comments pc ON pc.comment_id = c.id
+           WHERE pc.post_id = ?""",
+        (post_id,),
+    )
+    return render_template("post/single.html", post_single=post, comments=comments)
 
 
 @post_bp.route("/create", methods=("GET", "POST"))
